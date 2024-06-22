@@ -7,6 +7,10 @@ h1 {
     color: red;
 }
 
+a {
+    text-decoration: none;
+}
+
 .bookcover {
     height: 300px;
     width: auto;
