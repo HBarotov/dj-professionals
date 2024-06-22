@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import socket
 from pathlib import Path
 
+from environs import Env
+
+env = Env()
+env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-%^5d_36fu=14j2=po3@&cb5bh)+prd!&^v4ja$m9-gjaa6tw$z"
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -170,8 +175,8 @@ ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "APP": {
-            "client_id": "123",
-            "secret": "456",
+            "client_id": "Ov23liMj0gAtixqwuVEF",
+            "secret": "259e3fe8780e977f03e447976aae78f0118cb4a6",
         }
     }
 }

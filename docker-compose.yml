@@ -4,11 +4,13 @@ services:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-    - .:/bookstore
+      - .:/bookstore
     ports:
-    - 8000:8000
+      - 8000:8000
     depends_on:
-    - db
+      - db
+    environment:
+      - "DJANGO_SECRET_KEY=django-insecure-%^5d_36fu=14j2=po3@&cb5bh)+prd!&^v4ja$$m9-gjaa6tw$$z"
   db:
     image: postgres:15.4
     volumes:
