@@ -68,3 +68,15 @@ class ContactPageTests(SimpleTestCase):
     def test_contact_page_url_resolves_contactpageview(self):
         view = resolve("/contact/")
         self.assertEqual(view.func.__name__, views.ContactPageView.as_view().__name__)
+
+
+class Custom404Tests(SimpleTestCase):
+    def setUp(self):
+        url = "/404/does/not/exist"
+        self.response = self.client.get(url)
+
+    def test_url_exists_at_correct_location(self):
+        self.assertEqual(self.response.status_code, 404)
+
+    def test_404_page_template(self):
+        self.assertTemplateUsed(self.response, "404.html")
