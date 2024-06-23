@@ -29,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -94,14 +94,7 @@ WSGI_APPLICATION = "django_project.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",
-        "PORT": 5432,
-    }
+    "default": env.dj_db_url("DATABASE_URL", default="postgres://postgres@db/postgres")
 }
 
 
@@ -175,8 +168,8 @@ ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "APP": {
-            "client_id": "Ov23liMj0gAtixqwuVEF",
-            "secret": "259e3fe8780e977f03e447976aae78f0118cb4a6",
+            "client_id": env.str("GITHUB_CLIENT_ID"),
+            "secret": env.str("GITHUB_SECRET_KEY"),
         }
     }
 }

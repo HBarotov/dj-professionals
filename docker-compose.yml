@@ -11,6 +11,9 @@ services:
       - db
     environment:
       - "DJANGO_SECRET_KEY=django-insecure-%^5d_36fu=14j2=po3@&cb5bh)+prd!&^v4ja$$m9-gjaa6tw$$z"
+      - "DJANGO_DEBUG=True"
+      - "GITHUB_CLIENT_ID=Ov23liMj0gAtixqwuVEF"
+      - "GITHUB_SECRET_KEY=259e3fe8780e977f03e447976aae78f0118cb4a6"
   db:
     image: postgres:15.4
     volumes:
