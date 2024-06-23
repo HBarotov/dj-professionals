@@ -163,6 +163,7 @@ ACCOUNT_LOGOUT_REDIRECT = "pages:home"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_UNIQUE_EMAIL = True
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -174,6 +175,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+DEFAULT_FROM_EMAIL = "admin@bookstore.com"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Debug toolbar
