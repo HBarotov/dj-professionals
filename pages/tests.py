@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.test import SimpleTestCase
 from django.urls import resolve, reverse
 
@@ -5,6 +6,9 @@ from . import views
 
 
 class HomePageTests(SimpleTestCase):
+    def tearDown(self):
+        cache.clear()
+
     def setUp(self):
         url = reverse("pages:home")
         self.response = self.client.get(url)
@@ -27,6 +31,9 @@ class HomePageTests(SimpleTestCase):
 
 
 class AboutPageTests(SimpleTestCase):
+    def tearDown(self):
+        cache.clear()
+
     def setUp(self):
         url = reverse("pages:about")
         self.response = self.client.get(url)
@@ -49,6 +56,9 @@ class AboutPageTests(SimpleTestCase):
 
 
 class ContactPageTests(SimpleTestCase):
+    def tearDown(self):
+        cache.clear()
+
     def setUp(self):
         url = reverse("pages:contact")
         self.response = self.client.get(url)
