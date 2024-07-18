@@ -10,11 +10,11 @@
         <h2><a href="">{{ book.title }}</a></h2>
         <p>Author(s):</p>
         <ul>
-            {% for author in book.author.all %}
+            {% for author in book.authors.all %}
                 <p>{{ author.first_name }} {{ author.last_name }}</p>
             {% endfor %}
         </ul>
-        <p>Price: {{ book.price }}</p>
+        <p>Price: ${{ book.price }}</p>
         {% if book.reviews.all %}
             <div>
                 <h3>Reviews</h3>

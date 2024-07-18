@@ -1,16 +1,15 @@
 import uuid
 
+from authors.models import Author
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-
-from authors.models import Author
 
 
 class Book(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
-    author = models.ManyToManyField(Author, related_name="books_written")
+    authors = models.ManyToManyField(Author, related_name="books_written")
     price = models.DecimalField(max_digits=6, decimal_places=2)
     year = models.PositiveIntegerField(default=2024)
     edition = models.PositiveSmallIntegerField(default=1)

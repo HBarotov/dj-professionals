@@ -1,0 +1,24 @@
+{% extends "_base.html" %}
+
+{% block title %}Search{% endblock title %}
+
+{% block content %}
+    <h1>Search Results</h1>
+
+    {% if books %}
+        {% for book in books %}
+            <div>
+                <h3><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h3>
+                <p>Author</p>
+                <ul>
+                    {% for author in book.authors.all %}
+                        <li>{{ author.first_name }} {{author.last_name }}</li>
+                    {% endfor %}
+                </ul>
+                <p>Price: ${{ book.price }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No results found for "{{ query }}"</p>
+    {% endif %}
+{% endblock content %}

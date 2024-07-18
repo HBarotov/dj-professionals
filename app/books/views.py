@@ -1,5 +1,7 @@
 from django.contrib.auth import mixins
-from django.db.models import Q
+from django.contrib.postgres.search import TrigramSimilarity
+from django.db.models import F, Value
+from django.db.models.functions import Concat, Greatest
 from django.views import generic
 
 from .models import Book
@@ -7,8 +9,8 @@ from .models import Book
 
 class BookListView(mixins.LoginRequiredMixin, generic.ListView):
     queryset = Book.objects.order_by("-pk")
-    template_name = "books/book_list.html"
-    context_object_name = "book_list"
+    template_name = "books/list.html"
+    context_object_name = "books"
     login_url = "account_login"
 
 
@@ -16,7 +18,7 @@ class BookDetailView(
     mixins.LoginRequiredMixin, mixins.PermissionRequiredMixin, generic.DetailView
 ):
     model = Book
-    template_name = "books/book_detail.html"
+    template_name = "books/detail.html"
     context_object_name = "book"
     login_url = "account_login"
     permission_required = "books.special_status"
@@ -26,9 +28,30 @@ class BookDetailView(
 
 
 class SearchResultsListView(generic.ListView):
-    context_object_name = "book_list"
-    template_name = "books/search_results.html"
+    context_object_name = "books"
+    template_name = "books/search.html"
 
     def get_queryset(self):
         query = self.request.GET.get("q")
-        return Book.objects.filter(Q(title__icontains=query))
+        queryset = (
+            Book.objects.annotate(
+                title_similarity=TrigramSimilarity("title", query),
+                author_similarity=TrigramSimilarity(
+                    Concat(
+                        F("authors__first_name"), Value(" "), F("authors__last_name")
+                    ),
+                    query,
+                ),
+            )
+            .annotate(similarity=Greatest("title_similarity", "author_similarity"))
+            .filter(similarity__gt=0.1)
+            .order_by("-similarity")
+        ).distinct()
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get("q")
+        context["query"] = query
+        return context
