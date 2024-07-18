@@ -31,6 +31,4 @@ class SearchResultsListView(generic.ListView):
 
     def get_queryset(self):
         query = self.request.GET.get("q")
-        return Book.objects.filter(
-            Q(title__icontains=query) | Q(author__icontains="api")
-        )
+        return Book.objects.filter(Q(title__icontains=query))
