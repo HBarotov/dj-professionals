@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
     "books.apps.BooksConfig",
+    "authors.apps.AuthorsConfig",
     # 3rd party
     "django_cleanup.apps.CleanupConfig",
 ]

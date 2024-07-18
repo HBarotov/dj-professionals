@@ -9,7 +9,7 @@ class ReviewInline(admin.TabularInline):
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ["title", "author", "price"]
+    list_display = ["title", "price"]
     inlines = [
         ReviewInline,
     ]
