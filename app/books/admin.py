@@ -13,6 +13,7 @@ class BookAdmin(admin.ModelAdmin):
     inlines = [
         ReviewInline,
     ]
+    prepopulated_fields = {"slug": ("title",)}
 
 
 admin.site.register(Book, BookAdmin)

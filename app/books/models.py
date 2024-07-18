@@ -1,5 +1,3 @@
-import uuid
-
 from authors.models import Author
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -7,8 +5,8 @@ from django.urls import reverse
 
 
 class Book(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, max_length=200)
     authors = models.ManyToManyField(Author, related_name="books_written")
     price = models.DecimalField(max_digits=6, decimal_places=2)
     year = models.PositiveIntegerField(default=2024)
@@ -27,7 +25,7 @@ class Book(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("books:book_detail", args=[str(self.id)])
+        return reverse("books:book_detail", args=[str(self.id), self.slug])
 
 
 class Review(models.Model):
