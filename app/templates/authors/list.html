@@ -1,0 +1,20 @@
+{% extends '_base.html' %}
+
+{% block title %}
+    Author - {{ author }}
+{% endblock title %}
+
+{% block content %}
+
+    <h1>Authors</h1>
+    <ul>
+        {% for author in authors %}
+            <li>
+                <a href="{{ author.get_absolute_url }}">{{ author }}</a> - 
+                {% with book_count=author.books_written.count %}
+                    {{ book_count }} book{{ book_count|pluralize }}
+                {% endwith %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

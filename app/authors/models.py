@@ -1,6 +1,7 @@
 import os
 
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 
@@ -18,17 +19,12 @@ class Author(models.Model):
     profile = models.ImageField(upload_to=author_image_upload_to, default="author.png")
 
     def save(self, *args, **kwargs):
+        # Generate the slug from the first name and last name
         self.slug = slugify(f"{self.first_name} {self.last_name}")
-        super().save(*args, **kwargs)
-
-        if self.profile and self.profile.name != "author.png":
-            ext = self.profile.name.split(".")[-1]
-            new_filename = f"authors/{self.slug}.{ext}"
-            self.profile.storage.delete(new_filename)  # Ensure no file conflicts
-            self.profile.storage.save(new_filename, self.profile.file)
-            self.profile.name = new_filename
-
-            super().save(update_fields=["profile"])
+        super().save(*args, **kwargs)  # Save the instance to generate the ID
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def get_absolute_url(self):
+        return reverse("authors:author_detail", args=[self.pk, self.slug])

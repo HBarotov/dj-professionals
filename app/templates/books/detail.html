@@ -11,7 +11,7 @@
         <p>Author(s):</p>
         <ul>
             {% for author in book.authors.all %}
-                <p>{{ author.first_name }} {{ author.last_name }}</p>
+                <p><a href="{{ author.get_absolute_url }}">{{ author }}</a></p>
             {% endfor %}
         </ul>
         <p>Price: ${{ book.price }}</p>

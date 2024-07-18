@@ -12,7 +12,7 @@
                 <p>Author</p>
                 <ul>
                     {% for author in book.authors.all %}
-                        <li>{{ author.first_name }} {{author.last_name }}</li>
+                        <li>{{ author }}</li>
                     {% endfor %}
                 </ul>
                 <p>Price: ${{ book.price }}</p>

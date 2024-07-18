@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+
+{% block title %}
+    Authors
+{% endblock title %}
+
+{% block content %}
+    {% if author.profile %}
+        <img src="{{ author.profile.url }}" alt="{{ author }}" class="rounded-circle author-profile">
+    {% endif %}
+
+    <h1>{{ author }}</h1>
+
+    {% if author.email %}
+        <p>Email: {{ author.email }}</p>
+    {% endif %}
+    {% if author.books_written %}
+        <h3>Books written:</h3>
+        <ul>
+            {% for book in author.books_written.all %}
+                <p><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></p>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock content %}
