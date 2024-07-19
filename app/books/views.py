@@ -12,6 +12,7 @@ class BookListView(mixins.LoginRequiredMixin, generic.ListView):
     template_name = "books/list.html"
     context_object_name = "books"
     login_url = "account_login"
+    paginate_by = 10
 
 
 class BookDetailView(

@@ -8,4 +8,8 @@
             <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
         </div>
     {% endfor %}
+
+    <div class="mt-4">
+        {% include "includes/pagination.html" with page=page_obj %}
+    </div>
 {% endblock content %}

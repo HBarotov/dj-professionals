@@ -19,6 +19,7 @@ class AuthorListView(ListView):
     model = Author
     template_name = "authors/list.html"
     context_object_name = "authors"
+    paginate_by = 10
 
     def get_queryset(self):
         qs = (
