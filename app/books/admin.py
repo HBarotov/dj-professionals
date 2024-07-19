@@ -16,6 +16,7 @@ class BookAdmin(admin.ModelAdmin):
     ]
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ["available"]
+    ordering = ["price", "year"]
 
 
 admin.site.register(Book, BookAdmin)

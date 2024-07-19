@@ -8,6 +8,12 @@
             <img class="bookcover" src="{{ book.cover.url}}" alt="{{ book.title }}">
         {% endif %}
         <h2><a href="">{{ book.title }}</a></h2>
+        <h4>{{ book.subtitle }}</h4>
+        {% with copy=book.copy %}
+            {% if copy < 5 %}
+                <p class="text-danger">Only {{ copy }} left in stock.</p>
+            {% endif %}
+        {% endwith %}
         <p>Author(s):</p>
         <ul>
             {% for author in book.authors.all %}
@@ -25,5 +31,7 @@
                 </ul>
             </div>
         {% endif %}
+
+        <p><a href="{% url 'books:book_list' %}">Back to books</a></p>
     </div>
 {% endblock content %}

@@ -8,7 +8,7 @@ from .models import Book
 
 
 class BookListView(mixins.LoginRequiredMixin, generic.ListView):
-    queryset = Book.objects.order_by("-pk")
+    queryset = Book.sale.order_by("-pk")
     template_name = "books/list.html"
     context_object_name = "books"
     login_url = "account_login"
@@ -22,7 +22,7 @@ class BookDetailView(
     context_object_name = "book"
     login_url = "account_login"
     permission_required = "books.special_status"
-    queryset = Book.objects.all().prefetch_related(
+    queryset = Book.sale.all().prefetch_related(
         "reviews__author",
     )
 
@@ -34,7 +34,7 @@ class SearchResultsListView(generic.ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         queryset = (
-            Book.objects.annotate(
+            Book.sale.annotate(
                 title_similarity=TrigramSimilarity("title", query),
                 author_similarity=TrigramSimilarity(
                     Concat(

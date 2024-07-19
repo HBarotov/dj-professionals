@@ -4,8 +4,14 @@ from django.db import models
 from django.urls import reverse
 
 
+class AvailableManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(copy__gt=0)
+
+
 class Book(models.Model):
     title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=200)
     authors = models.ManyToManyField(Author, related_name="books_written")
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -13,6 +19,9 @@ class Book(models.Model):
     cover = models.ImageField(upload_to="covers/", blank=True)
     copy = models.PositiveIntegerField(default=1)
     available = models.BooleanField(default=True)
+
+    objects = models.Manager()  # The default manager
+    sale = AvailableManager()  # Our custom manager.
 
     class Meta:
         indexes = [
