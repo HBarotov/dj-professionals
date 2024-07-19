@@ -10,8 +10,9 @@ class Book(models.Model):
     authors = models.ManyToManyField(Author, related_name="books_written")
     price = models.DecimalField(max_digits=6, decimal_places=2)
     year = models.PositiveIntegerField(default=2024)
-    edition = models.PositiveSmallIntegerField(default=1)
     cover = models.ImageField(upload_to="covers/", blank=True)
+    copy = models.PositiveIntegerField(default=1)
+    available = models.BooleanField(default=True)
 
     class Meta:
         indexes = [
@@ -23,6 +24,13 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.copy > 0:
+            self.available = True
+        else:
+            self.available = False
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("books:book_detail", args=[str(self.id), self.slug])
