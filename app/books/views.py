@@ -48,7 +48,6 @@ class ReviewPost(mixins.LoginRequiredMixin, SingleObjectMixin, FormView):
         review = form.save(commit=False)
         review.book = self.object
         review.author = self.request.user
-        review.active = True
         review.save()
         return super().form_valid(form)
 
@@ -56,7 +55,7 @@ class ReviewPost(mixins.LoginRequiredMixin, SingleObjectMixin, FormView):
         return reverse("books:book_detail", args=[self.object.pk, self.object.slug])
 
 
-class BookDetailView(mixins.LoginRequiredMixin, View):
+class BookDetailView(View):
     def get(self, request, *args, **kwargs):
         view = ReviewGet.as_view()
         return view(request, *args, **kwargs)

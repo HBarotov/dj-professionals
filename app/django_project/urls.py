@@ -15,10 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from books.sitemaps import BookSiteMap
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
+
+sitemaps = {
+    "posts": BookSiteMap,
+}
 
 urlpatterns = [
     # Admin
@@ -28,6 +34,13 @@ urlpatterns = [
     # Local apps
     path("books/", include("books.urls")),
     path("authors/", include("authors.urls")),
+    # Sitemap
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
     path("", include("pages.urls")),
 ]
 

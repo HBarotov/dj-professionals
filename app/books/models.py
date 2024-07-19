@@ -13,6 +13,7 @@ class AvailableManager(models.Manager):
 class Book(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=255)
+    summary = models.TextField()
     slug = models.SlugField(unique=True, max_length=200)
     authors = models.ManyToManyField(Author, related_name="books_written")
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -20,6 +21,7 @@ class Book(models.Model):
     cover = models.ImageField(upload_to="covers/", blank=True)
     copy = models.PositiveIntegerField(default=1)
     available = models.BooleanField(default=True)
+    updated = models.DateTimeField(auto_now=True)
 
     objects = models.Manager()  # The default manager
     sale = AvailableManager()  # Our custom manager.
@@ -56,6 +58,9 @@ class Review(models.Model):
     created = models.DateField(default=timezone.now)
     updated = models.DateField(auto_now=True)
     active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["-pk"]
 
     def __str__(self):
         return f"{self.author} - {self.review}"

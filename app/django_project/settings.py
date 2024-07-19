@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "django.contrib.sitemaps",
     # 3rd party
     "crispy_forms",
     "crispy_bootstrap5",

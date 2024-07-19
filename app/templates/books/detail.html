@@ -14,7 +14,8 @@
                 <p class="text-danger">Only {{ copy }} left in stock.</p>
             {% endif %}
         {% endwith %}
-        <p>Author(s):</p>
+        <p>{{ book.summary|linebreaks }}</p>
+        <p>Written by:</p>
         <ul>
             {% for author in book.authors.all %}
                 <p><a href="{{ author.get_absolute_url }}">{{ author }}</a></p>
@@ -26,18 +27,24 @@
                 <h3>Reviews</h3>
                 <ul>
                     {% for review in book.reviews.all %}
-                        <li>{{ review.review }} &middot; {{ review.author }}</li>
+                        <li>
+                            {{ review.review }} &middot; {{ review.author }} &middot;
+                            {{ review.created }}
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
         {% endif %}
 
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Post">
-        </form>
-
+        {% if request.user.is_authenticated %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Post">
+            </form>
+        {% else %}
+            <p><a href="{% url 'account_login' %}?next={{ request.path }}">Login</a> to review</p>
+        {% endif %}
         <p><a href="{% url 'books:book_list' %}">Back to books</a></p>
     </div>
 {% endblock content %}
