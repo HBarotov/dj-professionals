@@ -32,6 +32,12 @@
             </div>
         {% endif %}
 
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Post">
+        </form>
+
         <p><a href="{% url 'books:book_list' %}">Back to books</a></p>
     </div>
 {% endblock content %}

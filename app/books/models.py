@@ -2,6 +2,7 @@ from authors.models import Author
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 
 class AvailableManager(models.Manager):
@@ -25,8 +26,9 @@ class Book(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=["id"], name="id_index"),
+            models.Index(fields=["copy"], name="copy_index"),
         ]
+        ordering = ["-pk"]
         permissions = [
             ("special_status", "Can read all books"),
         ]
@@ -47,8 +49,13 @@ class Book(models.Model):
 
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="reviews"
+    )
     review = models.CharField(max_length=255)
+    created = models.DateField(default=timezone.now)
+    updated = models.DateField(auto_now=True)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.author} - {self.review}"

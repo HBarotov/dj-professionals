@@ -8,6 +8,14 @@ class ReviewInline(admin.TabularInline):
     extra = 0
 
 
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ["review", "author", "book", "active"]
+    list_filter = ["book", "author", "active"]
+    date_hierarchy = "created"
+    raw_id_fields = ["book", "author"]
+
+
 class BookAdmin(admin.ModelAdmin):
     list_display = ["title", "price", "year", "copy", "available"]
     list_filter = ["price", "authors", "available", "year"]
