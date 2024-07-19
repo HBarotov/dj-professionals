@@ -1,3 +1,5 @@
+import os
+
 from authors.models import Author
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -10,6 +12,12 @@ class AvailableManager(models.Manager):
         return super().get_queryset().filter(copy__gt=0)
 
 
+def book_image_upload_to(instance, filename):
+    ext = filename.split(".")[-1]
+    filename = f"{instance.slug}.{ext}"
+    return os.path.join("covers/", filename)
+
+
 class Book(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=255)
@@ -18,7 +26,7 @@ class Book(models.Model):
     authors = models.ManyToManyField(Author, related_name="books_written")
     price = models.DecimalField(max_digits=6, decimal_places=2)
     year = models.PositiveIntegerField(default=2024)
-    cover = models.ImageField(upload_to="covers/", blank=True)
+    cover = models.ImageField(upload_to=book_image_upload_to, blank=True)
     copy = models.PositiveIntegerField(default=1)
     available = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now=True)

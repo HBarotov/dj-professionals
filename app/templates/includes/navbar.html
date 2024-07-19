@@ -21,6 +21,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'pages:about' %}">About</a></li>
                         <li><a class="dropdown-item" href="{% url 'pages:contact' %}">Contact</a></li>
+                        <li><a class="dropdown-item" href="{% url 'books:book_feed' %}">RSS</a></li>
                     </ul>
                 </li>       
                 {% if user.is_authenticated %}
