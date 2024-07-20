@@ -1,12 +1,16 @@
 {% extends '_base.html' %}
 
+{% load thumbnail %}
+
 {% block title %}
     Authors
 {% endblock title %}
 
 {% block content %}
     {% if author.profile %}
-        <img src="{{ author.profile.url }}" alt="{{ author }}" class="rounded-circle author-profile">
+        <a href="{{ author.profile.url }}">
+            <img src="{% thumbnail author.profile 300x0 %}" alt="{{ author }}" class="rounded-circle">
+        </a>
     {% endif %}
 
     <h1>{{ author }}</h1>

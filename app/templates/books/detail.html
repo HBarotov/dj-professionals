@@ -1,11 +1,15 @@
 {% extends "_base.html" %}
 
+{% load thumbnail %}
+
 {% block title %}{{ book.title }}{% endblock title %}
 
 {% block content %}
     <div class="book-detail">
         {% if book.cover %}
-            <img class="bookcover" src="{{ book.cover.url}}" alt="{{ book.title }}">
+            <a href="{{ book.cover.url }}">
+                <img src="{% thumbnail book.cover 300x0 %}" alt="{{ book.title }}">
+            </a>
         {% endif %}
         <h2><a href="">{{ book.title }}</a></h2>
         <h4>{{ book.subtitle }}</h4>

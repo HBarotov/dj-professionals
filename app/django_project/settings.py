@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.github",
     "debug_toolbar",
     "django_countries",
+    "easy_thumbnails",
     # Local
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
