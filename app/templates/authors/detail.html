@@ -7,23 +7,37 @@
 {% endblock title %}
 
 {% block content %}
-    {% if author.profile %}
-        <a href="{{ author.profile.url }}">
-            <img src="{% thumbnail author.profile 300x0 %}" alt="{{ author }}" class="rounded-circle">
-        </a>
-    {% endif %}
+    <div class="text-center">
+        {% if author.profile %}
+            <a href="{{ author.profile.url }}">
+                <img src="{% thumbnail author.profile 300x0 %}" alt="{{ author }}" class="rounded-circle">
+            </a>
+        {% endif %}
+        <h1>{{ author }}</h1>
+    </div>
 
-    <h1>{{ author }}</h1>
 
     {% if author.email %}
         <p>Email: {{ author.email }}</p>
     {% endif %}
     {% if author.books_written %}
         <h3>Books written:</h3>
-        <ul>
+        <div class="row justify-content-center">
             {% for book in author.books_written.all %}
-                <p><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></p>
+                <div class="col-md-4 text-center">
+                    <div class="card">
+                        <a href="{{ book.get_absolute_url }}">
+                            <img class="card-img-top" src="{% thumbnail book.cover 300x0 %}" alt="{{ book.title }}">
+                        </a>
+                        <div class="card-body">
+                          <h5 class="card-title"><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h5>
+                          <p class="card-text">{{ book.subtitle }}</p>
+                          <p class="card-text">Rating: {{ book.get_average_rating }}</p>
+                          <a href="{{ book.get_absolute_url }}" class="btn btn-primary">{{ book.title }}</a>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+          </div>
     {% endif %}
 {% endblock content %}

@@ -1,17 +1,27 @@
 {% extends "_base.html" %}
 
+{% load thumbnail %}
+
 {% block title %}Books{% endblock title %}
 
 {% block content %}
-    {% for book in books %}
-        <div>
-            {% if book.get_average_rating %}
-                <h2><a href="{{ book.get_absolute_url }}">{{ book.title }} - {{ book.get_average_rating }}</a></h2>
-            {% else %}
-                <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
-            {% endif %}
-        </div>
-    {% endfor %}
+    <div class="row gy-4 justify-content-center">
+        {% for book in books %}
+            <div class="col-md-4 text-center">
+                <div class="card">
+                    <a href="{{ book.get_absolute_url }}">
+                        <img class="card-img-top" src="{% thumbnail book.cover 300x0 %}" alt="{{ book.title }}">
+                    </a>
+                    <div class="card-body">
+                    <h5 class="card-title"><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h5>
+                    <p class="card-text">{{ book.subtitle }}</p>
+                    <p class="card-text">Rating: {{ book.average_rating }}</p>
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary">{{ book.title }}</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
     <div class="mt-4">
         {% include "includes/pagination.html" with page=page_obj %}

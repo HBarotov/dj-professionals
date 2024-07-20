@@ -1,6 +1,6 @@
 from django.contrib.auth import mixins
 from django.contrib.postgres.search import TrigramSimilarity
-from django.db.models import F, Value
+from django.db.models import Avg, F, Value
 from django.db.models.functions import Concat, Greatest
 from django.urls import reverse
 from django.views import View
@@ -13,10 +13,16 @@ from .models import Book, Review
 
 
 class BookListView(ListView):
-    queryset = Book.sale.order_by("-pk")
+    model = Book
     template_name = "books/list.html"
     context_object_name = "books"
     paginate_by = 10
+
+    def get_queryset(self):
+        queryset = Book.sale.annotate(average_rating=Avg("reviews__rating")).order_by(
+            "-average_rating", "-year"
+        )
+        return queryset
 
 
 class ReviewGet(DetailView):
