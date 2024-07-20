@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -24,7 +25,11 @@ def edit(request):
             user_form.save()
             profile_form.save()
 
-            return redirect("pages:home")
+            messages.success(request, "Profile updated successfully")
+
+            return redirect("accounts:profile")
+        else:
+            messages.error(request, "Error updating your profile")
 
     else:
         user_form = UserEditForm(instance=request.user)
