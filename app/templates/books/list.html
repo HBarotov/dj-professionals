@@ -5,7 +5,11 @@
 {% block content %}
     {% for book in books %}
         <div>
-            <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
+            {% if book.get_average_rating %}
+                <h2><a href="{{ book.get_absolute_url }}">{{ book.title }} - {{ book.get_average_rating }}</a></h2>
+            {% else %}
+                <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
+            {% endif %}
         </div>
     {% endfor %}
 

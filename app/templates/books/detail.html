@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 
-{% load thumbnail %}
+{% load thumbnail crispy_forms_tags %}
 
 {% block title %}{{ book.title }}{% endblock title %}
 
@@ -13,6 +13,7 @@
         {% endif %}
         <h2><a href="">{{ book.title }}</a></h2>
         <h4>{{ book.subtitle }}</h4>
+        <h4>Rating: {{ book.get_average_rating }}</h4>
         {% with copy=book.copy %}
             {% if copy < 5 %}
                 <p class="text-danger">Only {{ copy }} left in stock.</p>
@@ -32,23 +33,24 @@
                 <ul>
                     {% for review in book.reviews.all %}
                         <li>
-                            {{ review.review }} &middot; {{ review.author }} &middot;
+                            {{ review.review }} &middot; {{ review.rating }} &middot; {{ review.author }} &middot;
                             {{ review.created }}
                         </li>
                     {% endfor %}
                 </ul>
             </div>
         {% endif %}
-
+        {{ user_rating }}
         {% if request.user.is_authenticated %}
+            <h4>Add review</h4>
             <form action="" method="post">
                 {% csrf_token %}
-                {{ form }}
-                <input type="submit" value="Post">
+                {{ form|crispy }}
+                <input type="submit" value="Post" class="btn btn-success">
             </form>
         {% else %}
             <p><a href="{% url 'account_login' %}?next={{ request.path }}">Login</a> to review</p>
         {% endif %}
-        <p><a href="{% url 'books:book_list' %}">Back to books</a></p>
+        <p class="mt-4"><a href="{% url 'books:book_list' %}">Back to books</a></p>
     </div>
 {% endblock content %}

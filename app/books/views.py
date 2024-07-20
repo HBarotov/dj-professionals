@@ -9,14 +9,13 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from .forms import ReviewForm
-from .models import Book
+from .models import Book, Review
 
 
 class BookListView(ListView):
     queryset = Book.sale.order_by("-pk")
     template_name = "books/list.html"
     context_object_name = "books"
-    login_url = "account_login"
     paginate_by = 10
 
 
@@ -30,7 +29,14 @@ class ReviewGet(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = ReviewForm
+        book = self.get_object()
+        user_rating = Review.objects.filter(book=book, author=self.request.user).first()
+        if user_rating:
+            form = ReviewForm(instance=user_rating)
+        else:
+            form = ReviewForm()
+
+        context["form"] = form
         return context
 
 
@@ -45,9 +51,18 @@ class ReviewPost(mixins.LoginRequiredMixin, SingleObjectMixin, FormView):
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        review = form.save(commit=False)
-        review.book = self.object
-        review.author = self.request.user
+        user = self.request.user
+        review = Review.objects.filter(book=self.object, author=user).first()
+
+        if review:
+            form = ReviewForm(self.request.POST, instance=review)
+            review = form.save(commit=False)
+
+        else:
+            review = form.save(commit=False)
+            review.book = self.object
+            review.author = user
+
         review.save()
         return super().form_valid(form)
 

@@ -2,7 +2,9 @@ import os
 
 from authors.models import Author
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Avg
 from django.urls import reverse
 from django.utils import timezone
 
@@ -56,19 +58,30 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse("books:book_detail", args=[str(self.id), self.slug])
 
+    def get_average_rating(self):
+        ratings = self.reviews.all()
+        if ratings.exists:
+            return ratings.aggregate(Avg("rating"))["rating__avg"]
+        return 0
+
 
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
     author = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name="reviews"
     )
-    review = models.CharField(max_length=255)
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text="Rating (1 to 5)",
+    )
+    review = models.CharField(max_length=255, blank=True)
     created = models.DateField(default=timezone.now)
     updated = models.DateField(auto_now=True)
     active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ["-pk"]
+        unique_together = ("book", "author")
 
     def __str__(self):
         return f"{self.author} - {self.review}"
