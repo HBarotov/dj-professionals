@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.github",
     "debug_toolbar",
+    "django_countries",
     # Local
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
@@ -175,7 +176,7 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-LOGIN_REDIRECT_URL = "pages:home"
+LOGIN_REDIRECT_URL = "accounts:profile"
 
 ACCOUNT_LOGOUT_REDIRECT = "pages:home"
 ACCOUNT_USERNAME_REQUIRED = False

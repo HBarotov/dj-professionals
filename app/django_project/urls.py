@@ -34,6 +34,7 @@ urlpatterns = [
     # Local apps
     path("books/", include("books.urls")),
     path("authors/", include("authors.urls")),
+    path("accounts/", include("accounts.urls")),
     # Sitemap
     path(
         "sitemap.xml",

@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+
+{% block title %}
+    {{ profile }}
+{% endblock title %}
+
+{% block content  %}
+    <h1>Your profile</h1>
+    <ul>
+        <li>First Name: {{ profile.user.first_name }}</li>
+        <li>Last Name: {{ profile.user.last_name }}</li>
+        <li>Address: {{ profile.address }}</li>
+        <li>City: {{ profile.city }}</li>
+        <li>Region: {{ profile.region }}</li>
+        <li>Country: {{ profile.country }}</li>
+    </ul>
+    <a href="{% url 'accounts:edit' %}">Edit profile</a>
+{% endblock content %}
